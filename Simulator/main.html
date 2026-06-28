@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Max V05</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="kaiads.v5.min.js"></script> 
+  <style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
+  background-color: #f4f4f9;  
+  color: #333;  
+  margin: 0;  
+  height: 100vh;  
+  display: flex;  
+  flex-direction: column;  
+  overflow: hidden;  
+}  
+
+header {
+      background-color: #0084ff;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+header1 {
+      background-color: #0084ff;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+.navItem {  
+  display: block;  
+  width: 90%;  
+  margin: 8px auto;  
+  padding: 8px;  
+  font-size: 14px;  
+  border-radius: 6px;  
+  border: 1px solid #ccc;  
+  background: linear-gradient(145deg, #fff, #e4e4e4);  
+  transition: all 0.3s ease;  
+}  
+
+.navItem:focus {  
+  border: 2px solid #007bff;  
+}  
+
+button {  
+  background: linear-gradient(45deg, #1e90ff, #00bfff);  
+  color: black;  
+  border: none;  
+  cursor: pointer;  
+  font-size: 14px;  
+  font-weight: bold;  
+  padding: 8px 16px;  
+  width: 80%;  
+  border-radius: 6px;  
+  margin-top: 8px;  
+  transition: background 0.3s ease;  
+}  
+
+button:hover {  
+  background: linear-gradient(45deg, #00bfff, #1e90ff);  
+}  
+
+#loginPage,  
+#mainPage,  
+#chatPage {  
+  flex: 1;  
+  overflow: auto;  
+  display: none;  
+}  
+
+#loginPage.active,  
+#mainPage.active,  
+#chatPage.active {  
+  display: flex;  
+  flex-direction: column;  
+}  
+
+#loginPage {  
+  justify-content: center;  
+  align-items: center;  
+  background-color: #f4f4f9;  
+  color: #333;  
+  height: 100vh;  
+  padding-top: 40px; 
+}  
+
+#loginContainer {  
+  width: 90%;  
+  text-align: center;  
+}  
+
+#mainPage {  
+  padding-top: 50px; 
+}  
+
+#privateChatList {  
+  padding: 8px;  
+  color: black;  
+  font-weight: bold;  
+  text-align: center;  
+}  
+
+.chat-item {  
+  padding: 8px;  
+  background: linear-gradient(145deg, #ffffff, #f7f7f7);  
+  border-radius: 6px;  
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);  
+  cursor: pointer;  
+  font-size: 14px;  
+  transition: all 0.3s ease;  
+}  
+
+.chat-item:hover {  
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);  
+}  
+
+
+    /* Chat header */
+     #chatHeader {
+      background-color: #0084ff;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+     #chatHeader img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+#chatBox {  
+  position: relative;  
+  flex: 1;  
+  overflow-y: auto;  
+  padding: 8px;  
+  background-color: #e9ecef;  
+  border-top: 1px solid #ccc;  
+  background-size: cover;  
+  background-position: center;  
+}  
+
+.message-container {  
+  display: flex;  
+  flex-direction: column;  
+  margin: 6px 0;  
+  max-width: 70%;  
+  position: relative;  
+}  
+
+.message {  
+  padding: 8px;  
+  border-radius: 6px;  
+  font-size: 12px;  
+  position: relative;  
+  display: flex;  
+  flex-direction: column;  
+}  
+
+.sent-container {  
+  align-self: flex-end;  
+margin-left: auto; /* Pushes to the right */
+}  
+
+.received-container {  
+margin-right: auto; /* Pushes to the left */
+  align-self: flex-start;  
+}  
+
+.sent {  
+  background: linear-gradient(45deg, #1e90ff, #00bfff);  
+  color: white;  
+}  
+
+.received {  
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);  
+  color: #333;  
+}  
+
+.seen-by-both {  
+  color: green !important;  
+}  
+
+.seen-timestamp {  
+  font-size: 10px;  
+  color: white;  
+  margin-top: 4px;  
+  align-self: flex-end;  
+}  
+
+.received-timestamp {  
+  font-size: 10px;  
+  color: #666;  
+  margin-top: 4px;  
+  align-self: flex-start;  
+}  
+
+.reaction {  
+  font-size: 14px;  
+  position: absolute;  
+  bottom: 0;  
+  right: 0;  
+  color: #555;  
+  padding: 2px;  
+}  
+
+#messageInputContainer {  
+  display: flex;  
+  align-items: center;  
+  padding: 8px;  
+  background-color: #f8f9fa;  
+  border-top: 1px solid #ccc;  
+  gap: 8px;  
+}  
+
+#imageButton {
+      width: 32px;
+      height: 32px;
+      background-image: url('https://cdn-icons-png.freepik.com/256/10389/10389182.png');
+      background-size: cover;
+      background-position: center;
+      border: none;
+      cursor: pointer;
+    }
+
+
+#imageButton:focus {  
+  border: 2px solid #007bff;  
+}  
+
+#messageInput {  
+  flex: 1;  
+  padding: 8px;  
+  font-size: 14px;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  background-color: #fff;  
+  color: #333;  
+}  
+
+#sendButton {
+      width: 32px;
+      height: 32px;
+      background-image: url('https://cdn-icons-png.freepik.com/256/8026/8026329.png');
+      background-size: cover;
+      background-position: center;
+      border: none;
+      cursor: pointer;
+      margin: 0;
+      align-self: center;
+    }
+
+#sendButton:focus {  
+  border: 2px solid #007bff;  
+}  
+
+#softKeysContainer {   
+  width: 100%;    
+  position: fixed;  
+  bottom: 0;  
+  display: none;  
+}  
+
+#softKeysContainer.active {  
+  display: block;  
+}  
+
+#softkey-left,  
+#softkey-center,  
+#softkey-right {  
+}  
+
+.message img {  
+  max-width: 100%;  
+  height: 100%;  
+  border-radius: 6px;  
+  margin-top: 4px;  
+}  
+
+.message:focus {  
+  outline: none;  
+  box-shadow: 0 0 10px 2px rgba(0, 123, 255, 0.7);  
+}  
+
+.fullscreen-image {  
+  position: fixed;  
+  top: 50%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  width: 100%;  
+  height: 100%;  
+  object-fit: fill;  
+  background-color: black;  
+  z-index: 9999;  
+}  
+
+.emoji-container {  
+  display: none;  
+  position: absolute;  
+  bottom: -40px;  
+  right: 0;  
+  background: linear-gradient(45deg, #ffcc00, #ff66cc, #66ffcc);  
+  border: 1px solid #ccc;  
+  border-radius: 6px;  
+  padding: 4px;  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+  z-index: 100;  
+}  
+
+.emoji {  
+  display: inline-block;  
+  padding: 4px;  
+  font-size: 16px;  
+  cursor: pointer;  
+  border-radius: 4px;  
+  transition: background 0.2s ease;  
+}  
+
+.emoji:focus {  
+  outline: 2px solid #007bff;  
+  background: rgba(255, 255, 255, 0.3);  
+}  
+
+.action-container {  
+  display: none;  
+  position: absolute;  
+  bottom: -80px;  
+  right: 0;  
+  background: linear-gradient(45deg, #ff9966, #ff5e62, #ffcc99);  
+  border: 1px solid #ccc;  
+  border-radius: 6px;  
+  padding: 4px;  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+  z-index: 100;  
+}  
+
+.action-button {  
+  display: inline-block;  
+  padding: 4px 8px;  
+  font-size: 12px;  
+  color: #fff;  
+  border: 1px solid #ccc;  
+  border-radius: 4px;  
+  cursor: pointer;  
+  margin: 2px;  
+  transition: background 0.2s ease;  
+}  
+
+.delete-for-me {  
+  background: linear-gradient(45deg, #ff4500, #ff8c00);  
+}  
+
+.delete-for-everyone {  
+  background: linear-gradient(45deg, #ff1493, #ff69b4);  
+}  
+
+.action-button:focus {  
+  outline: 2px solid #007bff;  
+  background: rgba(255, 255, 255, 0.3);  
+}  
+
+.last-seen {  
+  font-size: 10px;  
+  color: #fff;  
+  margin-left: 8px;  
+}  
+
+.deleted-message {  
+  background: linear-gradient(145deg, #d3d3d3, #a9a9a9);  
+  color: #666;  
+  font-style: italic;  
+}  
+
+.blocked-message {
+  background: linear-gradient(145deg, #ff4444, #ff9999);
+  color: white;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Themes */  
+.rainbow-theme { background: linear-gradient(45deg, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #8000ff); color: #333; }  
+.skyway-theme { background: linear-gradient(180deg, #87CEEB, #E0F7FA); color: #333; }  
+.night-theme { background: linear-gradient(180deg, #1a1a2e, #16213e); color: #e0e0e0; }  
+.forest-theme { background: linear-gradient(180deg, #2e4f2e, #4a704a); color: #e0e0e0; }  
+.sunset-theme { background: linear-gradient(180deg, #ff4500, #ff8c00); color: #333; }  
+.ocean-theme { background: linear-gradient(180deg, #1e90ff, #00b7eb); color: #333; }  
+.lavender-theme { background: linear-gradient(180deg, #e6e6fa, #d8bfd8); color: #333; }  
+.galaxy-theme { background: linear-gradient(180deg, #0d1b2a, #1b263b); color: #e0e0e0; }  
+.neon-theme { background: linear-gradient(180deg, #ff00ff, #00ffcc); color: #333; }  
+.desert-theme { background: linear-gradient(180deg, #f4a261, #e76f51); color: #333; }  
+.aurora-theme { background: linear-gradient(180deg, #2a9d8f, #264653); color: #e0e0e0; }  
+.candy-theme { background: linear-gradient(180deg, #ff70a6, #ff9770); color: #333; }  
+.neon-glowing-theme { background: linear-gradient(45deg, #00ffcc, #ff00ff, #00ccff, #ffcc00); color: #fff; text-shadow: 0 0 5px #00ffcc, 0 0 10px #ff00ff; }  
+.cosmic-dust-theme { background: linear-gradient(135deg, #1e1e3f, #3f2a5d, #6b4984, #9d75a8); color: #e0e0e0; }  
+.tropical-vibe-theme { background: linear-gradient(45deg, #ff6b6b, #ffa07a, #98ff98, #20b2aa); color: #333; }  
+.electric-pulse-theme { background: linear-gradient(90deg, #ff007a, #00d4ff, #ff00cc, #00ff7f); color: #fff; }  
+.mystic-dawn-theme { background: linear-gradient(180deg, #4b0082, #9400d3, #ff1493, #ff69b4); color: #e0e0e0; }  
+.firestorm-theme { background: linear-gradient(45deg, #ff4500, #ff8c00, #ff0000, #dc143c); color: #fff; }  
+.glacial-glow-theme { background: linear-gradient(135deg, #00ced1, #4682b4, #00b7eb, #87cefa); color: #333; }  
+.retro-wave-theme { background: linear-gradient(90deg, #ff77ff, #00ffff, #ff00ff, #00ffcc); color: #fff; }  
+.golden-horizon-theme { background: linear-gradient(180deg, #ffd700, #ff8c00, #ffa500, #ff4500); color: #333; }  
+
+/* Custom Alert Styles */  
+.custom-alert {  
+  position: fixed;  
+  top: 50%;  
+  left: 50%;  
+  transform: translate(-50%, -50%);  
+  background: white;  
+  border: 2px solid #ff6f61;  
+  border-radius: 6px;  
+  padding: 20px;  
+  z-index: 10000;  
+  text-align: center;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+}  
+
+.custom-alert-header {  
+  background: linear-gradient(45deg, #ff6f61, #ff9a8b);  
+  color: white;  
+  padding: 8px;  
+  font-weight: bold;  
+  border-radius: 4px 4px 0 0;  
+  margin: -20px -20px 10px -20px;  
+}  
+
+.custom-alert .navItem {  
+  width: 100%;  
+}  
+
+.button-container {  
+  display: flex;  
+  justify-content: space-around;  
+  margin-top: 10px;  
+}
+  </style>
+</head>
+<body>
+  <div id="loginPage" class="active">
+    <header1> Login </header1>
+    <div id="loginContainer">
+      <input type="text" id="usernameInput" class="navItem" placeholder="Enter your name" tabindex="1" />
+      <input type="password" id="passwordInput" class="navItem" placeholder="Enter your password" tabindex="2" />
+      <button id="signInButton" class="navItem" tabindex="3">Sign In</button>
+    </div>
+  </div>
+
+  <div id="mainPage">
+
+    <div id="chatHeader">
+Chat Max 💬
+</div>
+    <input type="text" id="searchInput" class="navItem" placeholder="Search for a user" tabindex="1" />
+    <button id="searchButton" class="navItem" tabindex="2">Search</button>
+    <button id="worldChatButton" class="navItem" tabindex="3" onclick="navigateTo('world_chat.html')">World Chat</button>
+    <button id="groupChatButton" class="navItem" tabindex="4" onclick="navigateTo('groups.html')">Group Chat</button>
+    <button id="changeBackgroundButton" class="navItem" tabindex="5">Change Chat Background</button>
+    <button id="changeThemeButton" class="navItem" tabindex="6">Change Theme</button>
+    <div id="privateChatList">
+      <h4>↓ Private Chats ↓ </h4>
+    </div>
+  </div>
+
+  <div id="chatPage">
+    <header id="chatHeader"></header>
+    <div id="chatBox">
+      <div class="empty-message"></div>
+    </div>
+    <div id="messageInputContainer">
+      <button id="imageButton" class="navItem" tabindex="3"></button>
+      <input type="text" id="messageInput" class="navItem" placeholder="Enter your message" tabindex="4" />
+      <button id="sendButton" class="navItem" tabindex="5"></button>
+    </div>
+  </div>
+  <div id="softKeysContainer">
+    <div id="softkey-left"></div>
+    <div id="softkey-center"></div>
+    <div id="softkey-right"></div>
+  </div>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCcPZRtjWHfW-5fTNsXeEfT7IrAx7O2vRM",
+      authDomain: "chit-chat-359a4.firebaseapp.com",
+      projectId: "chit-chat-359a4",
+      storageBucket: "chit-chat-359a4.appspot.com",
+      messagingSenderId: "941229772449",
+      appId: "1:941229772449:web:f0d6c439397e55dc076ae0",
+      measurementId: "G-TJHQSFCVR0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
+    var loginPage = document.getElementById("loginPage");
+    var mainPage = document.getElementById("mainPage");
+    var chatPage = document.getElementById("chatPage");
+    var chatHeader = document.getElementById("chatHeader");
+    var chatBox = document.getElementById("chatBox");
+    var privateChatList = document.getElementById("privateChatList");
+    var messageInput = document.getElementById("messageInput");
+    var imageButton = document.getElementById("imageButton");
+    var sendButton = document.getElementById("sendButton");
+    var changeBackgroundButton = document.getElementById("changeBackgroundButton");
+    var changeThemeButton = document.getElementById("changeThemeButton");
+    var softKeysContainer = document.getElementById("softKeysContainer");
+    var signInButton = document.getElementById("signInButton");
+    var usernameInput = document.getElementById("usernameInput");
+    var passwordInput = document.getElementById("passwordInput");
+    var currentChatType = null;
+    var messages = [];
+    var chatRef = null;
+    var otherChatRef = null;
+    var processedMessages = new Set();
+    var pressCount = 0;
+    var currentEmojiContainer = null;
+    var currentActionContainer = null;
+    var shownAlerts = new Set();
+    var isAlertActive = false;
+    var isBlockedByUser = false;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var savedBackground = localStorage.getItem("chatBackground");
+      var savedTheme = localStorage.getItem("chatTheme");
+      if (savedBackground) {
+        chatBox.style.backgroundImage = "url(" + savedBackground + ")";
+      }
+      if (savedTheme) {
+        document.body.className = savedTheme;
+      }
+      if (username && password) {
+        authenticateUser(username, password);
+        mainPage.classList.add("active");
+        loginPage.classList.remove("active");
+        document.getElementById("searchInput").focus();
+      } else {
+        loginPage.classList.add("active");
+        usernameInput.focus();
+      }
+    });
+
+    function showCustomAlert(message, callback) {
+      isAlertActive = true;
+      var alertBox = document.createElement("div");
+      alertBox.className = "custom-alert";
+      alertBox.innerHTML = '<div class="custom-alert-header">Chit Chat</div><p>' + message + '</p><button id="alertOkButton" class="navItem">OK</button>';
+      document.body.appendChild(alertBox);
+
+      var okButton = document.getElementById("alertOkButton");
+      okButton.focus();
+      okButton.onclick = function () {
+        document.body.removeChild(alertBox);
+        isAlertActive = false;
+        if (callback) callback(true);
+      };
+
+      okButton.onkeydown = function (e) {
+        if (e.key === "Enter") okButton.click();
+      };
+    }
+
+    function showCustomPrompt(message, callback, validOptions) {
+      isAlertActive = true;
+      var alertBox = document.createElement("div");
+      alertBox.className = "custom-alert";
+      alertBox.innerHTML = '<div class="custom-alert-header">Chit Chat</div><p>' + message + '</p><input type="text" id="promptInput" class="navItem" /><button id="promptOkButton" class="navItem">OK</button>';
+      document.body.appendChild(alertBox);
+
+      var input = document.getElementById("promptInput");
+      var okButton = document.getElementById("promptOkButton");
+      input.focus();
+
+      okButton.onclick = function () {
+        var value = input.value.trim();
+        if (validOptions && (!value || validOptions.indexOf(value) === -1)) {
+          showCustomAlert("Please select one option.", function () {
+            input.focus();
+          });
+          return;
+        }
+        document.body.removeChild(alertBox);
+        isAlertActive = false;
+        callback(value);
+      };
+
+      input.onkeydown = function (e) {
+        if (e.key === "Enter") okButton.click();
+      };
+
+      input.onkeydown = function (e) {
+        if (e.key === "ArrowDown") {
+          okButton.focus();
+        }
+      };
+
+      okButton.onkeydown = function (e) {
+        if (e.key === "ArrowUp") {
+          input.focus();
+        }
+      };
+    }
+
+    function showConfirmPrompt(message, callback) {
+      isAlertActive = true;
+      var alertBox = document.createElement("div");
+      alertBox.className = "custom-alert";
+      alertBox.innerHTML = '<div class="custom-alert-header">Chit Chat</div><p>' + message + '</p><div class="button-container"><button id="confirmOkButton" class="navItem">OK</button><button id="confirmCancelButton" class="navItem">Cancel</button></div>';
+      document.body.appendChild(alertBox);
+
+      var okButton = document.getElementById("confirmOkButton");
+      var cancelButton = document.getElementById("confirmCancelButton");
+      okButton.focus();
+
+      okButton.onclick = function () {
+        document.body.removeChild(alertBox);
+        isAlertActive = false;
+        callback(true);
+      };
+
+      cancelButton.onclick = function () {
+        document.body.removeChild(alertBox);
+        isAlertActive = false;
+        callback(false);
+      };
+
+      okButton.onkeydown = function (e) {
+        if (e.key === "Enter") okButton.click();
+        if (e.key === "ArrowRight") cancelButton.focus();
+      };
+
+      cancelButton.onkeydown = function (e) {
+        if (e.key === "Enter") cancelButton.click();
+        if (e.key === "ArrowLeft") okButton.focus();
+      };
+    }
+
+    signInButton.onclick = function () {
+      var enteredUsername = usernameInput.value.trim();
+      var enteredPassword = passwordInput.value.trim();
+      if (!enteredUsername || !enteredPassword) {
+        showCustomAlert("Please enter both username and password.");
+        return;
+      }
+      authenticateUser(enteredUsername, enteredPassword);
+    };
+
+    usernameInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        passwordInput.focus();
+      }
+    });
+
+    passwordInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        signInButton.focus();
+        signInButton.click();
+      }
+    });
+
+    function navigateTo(url) {
+      window.location.href = url;
+    }
+
+    function registerPushNotifications() {
+      if ('navigator.mozApps' in window) {
+        var request = navigator.mozApps.getSelf();
+        request.onsuccess = function() {
+          var app = this.result;
+          if (app) {
+            navigator.push = navigator.push || {};
+            var reg = navigator.push.register();
+            reg.onsuccess = function(e) {
+              var endpoint = e.result;
+              localStorage.setItem("pushEndpoint", endpoint);
+              console.log("Push endpoint registered:", endpoint);
+            };
+          }
+        };
+      }
+    }
+
+    function sendPushNotification(message, from) {
+      if (Notification.permission === "granted") {
+        new Notification("New message from " + from, {
+          body: message,
+          icon: 'icons/icon56x56.png'
+        });
+      }
+    }
+
+    function showKaiAd() {
+      getKaiAd({
+        publisher: '58d21092-87f8-47c3-883d-fcd67eb318d8',
+        app: '10',
+        slot: '10',
+        onerror: function(err) { console.error('Custom catch:', err); },
+        onready: function(ad) {
+          var previouslyFocusedElement = document.activeElement;
+          ad.call('display');
+          ad.on('display', function() { softKeysContainer.style.display = chatPage.classList.contains("active") ? "block" : "none"; });
+          ad.on('close', function() {
+            if (previouslyFocusedElement) previouslyFocusedElement.focus();
+            softKeysContainer.style.display = chatPage.classList.contains("active") ? "block" : "none";
+          });
+        }
+      });
+    }
+
+    function authenticateUser(enteredUsername, enteredPassword) {
+      firebase.database().ref("users/" + enteredUsername).once("value", function (snapshot) {
+        if (snapshot.exists()) {
+          var userData = snapshot.val();
+          if (userData.password === enteredPassword) {
+            username = enteredUsername;
+            password = enteredPassword;
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            loginPage.classList.remove("active");
+            mainPage.classList.add("active");
+            softKeysContainer.style.display = "none";
+            loadPrivateChats();
+            setupPresence();
+            registerPushNotifications();
+            showKaiAd();
+            setInterval(showKaiAd, 2 * 60 * 1000);
+            document.getElementById("searchInput").focus();
+          } else {
+            showCustomAlert("Incorrect password. Please try again.", function () {
+              passwordInput.value = "";
+              passwordInput.focus();
+            });
+          }
+        } else {
+          firebase.database().ref("users/" + enteredUsername).set({
+            name: enteredUsername,
+            password: enteredPassword,
+            timestamp: Date.now()
+          });
+          username = enteredUsername;
+          password = enteredPassword;
+          localStorage.setItem("username", username);
+          localStorage.setItem("password", password);
+          loginPage.classList.remove("active");
+          mainPage.classList.add("active");
+          softKeysContainer.style.display = "none";
+          loadPrivateChats();
+          setupPresence();
+          registerPushNotifications();
+          showKaiAd();
+          setInterval(showKaiAd, 2 * 60 * 1000);
+          document.getElementById("searchInput").focus();
+        }
+      });
+    }
+
+    function setupPresence() {
+      var presenceRef = firebase.database().ref("presence/" + username);
+      var connectedRef = firebase.database().ref(".info/connected");
+
+      connectedRef.on("value", function (snap) {
+        if (snap.val() === true) {
+          presenceRef.set({ online: true, lastSeen: Date.now() });
+          presenceRef.onDisconnect().set({ online: false, lastSeen: Date.now() });
+        }
+      });
+    }
+
+    function isUserBlocked(blocker, blocked) {
+      return firebase.database().ref("blocked/" + blocker + "/" + blocked).once("value").then(function (snapshot) {
+        return snapshot.exists();
+      });
+    }
+
+    function blockUser(blocker, blocked) {
+      firebase.database().ref("blocked/" + blocker + "/" + blocked).set(true);
+      firebase.database().ref("privateChats/" + blocker + "/" + blocked).remove();
+      firebase.database().ref("privateChats/" + blocked + "/" + blocker).remove();
+    }
+
+    function unblockUser(blocker, blocked) {
+      firebase.database().ref("blocked/" + blocker + "/" + blocked).remove();
+    }
+
+    function formatLastSeen(timestamp) {
+      var now = Date.now();
+      var diff = now - timestamp;
+      var date = new Date(timestamp);
+      var timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      if (diff < 24 * 60 * 60 * 1000) {
+        return timeStr;
+      } else if (diff < 48 * 60 * 60 * 1000) {
+        return "1 day";
+      } else {
+        return Math.floor(diff / (24 * 60 * 60 * 1000)) + " days";
+      }
+    }
+
+    function formatSendTime(timestamp) {
+      var date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function loadPrivateChats() {
+      privateChatList.innerHTML = "<h4> ↓ Private Chats ↓ </h4>";
+      firebase.database().ref("privateChats/" + username).on("child_added", function (snapshot) {
+          var partnerName = snapshot.key;
+          isUserBlocked(username, partnerName).then(function (blocked) {
+              if (!blocked) {
+                  var userElement = document.createElement("div");
+                  userElement.className = "user navItem";
+                  var nameSpan = document.createElement("span");
+                  nameSpan.textContent = partnerName;
+                  var unreadSpan = document.createElement("span");
+                  unreadSpan.style.marginLeft = "5px";
+                  unreadSpan.style.color = "red";
+                  unreadSpan.style.fontWeight = "bold";
+                  userElement.appendChild(nameSpan);
+                  userElement.appendChild(unreadSpan);
+                  userElement.tabIndex = 7;
+
+                  userElement.onclick = function () {
+                      openChat(partnerName);
+                      markMessagesAsSeen(partnerName, userElement);
+                  };
+
+                  userElement.onkeydown = function (e) {
+                      if (e.key === "Enter") {
+                          if (!shownAlerts.has(partnerName)) {
+                              showCustomPrompt("Select an option for " + partnerName + ":\nOptions:\n1. Chat\n2. Delete\n3. Block", function (choice) {
+                                  shownAlerts.add(partnerName);
+                                  if (choice === "1") {
+                                      openChat(partnerName);
+                                      markMessagesAsSeen(partnerName, userElement);
+                                  } else if (choice === "2") {
+                                      firebase.database().ref("privateChats/" + username + "/" + partnerName).remove();
+                                      userElement.remove();
+                                  } else if (choice === "3") {
+                                      blockUser(username, partnerName);
+                                      userElement.remove();
+                                      showCustomAlert(partnerName + " has been blocked and chat history deleted.", function () {
+                                          document.getElementById("searchInput").focus();
+                                      });
+                                  }
+                              }, ["1", "2", "3"]);
+                          } else {
+                              openChat(partnerName);
+                              markMessagesAsSeen(partnerName, userElement);
+                          }
+                      }
+                  };
+                  privateChatList.appendChild(userElement);
+
+                  // Update unread count
+                  function updateUnreadCount() {
+                      var chatRef = firebase.database().ref("privateChats/" + username + "/" + partnerName);
+                      chatRef.once("value", function (chatSnapshot) {
+                          var unreadCount = 0;
+                          chatSnapshot.forEach(function (msgSnapshot) {
+                              var data = msgSnapshot.val();
+                              if (data.from === partnerName && !data.seen) {
+                                  unreadCount++;
+                              }
+                          });
+                          unreadSpan.textContent = unreadCount > 0 ? `(${unreadCount})` : "";
+                          updateUserColor(partnerName, userElement, unreadCount);
+                      });
+                  }
+
+                  var chatRef = firebase.database().ref("privateChats/" + username + "/" + partnerName);
+                  chatRef.on("child_added", function (msgSnapshot) {
+                      var data = msgSnapshot.val();
+                      if (!data.seen && data.from === partnerName) {
+                          updateUnreadCount();
+                          sendPushNotification(data.message || "Image received", partnerName);
+                      }
+                  });
+
+                  chatRef.on("child_changed", function (msgSnapshot) {
+                      var data = msgSnapshot.val();
+                      if (data.from === partnerName) {
+                          updateUnreadCount();
+                      }
+                  });
+
+                  firebase.database().ref("presence/" + partnerName).on("value", function (snap) {
+                      updateUnreadCount();
+                  });
+
+                  // Initial count update
+                  updateUnreadCount();
+              }
+          });
+      });
+    }
+
+    function updateUserColor(partnerName, userElement, unreadCount) {
+        var presenceRef = firebase.database().ref("presence/" + partnerName);
+        presenceRef.once("value", function (snap) {
+            var isOnline = snap.val() && snap.val().online;
+            if (unreadCount > 0) {
+                userElement.style.color = "red";
+            } else if (isOnline) {
+                userElement.style.color = "green";
+            } else {
+                userElement.style.color = "black";
+            }
+        });
+    }
+
+    function markMessagesAsSeen(partnerName, userElement) {
+        var chatRef = firebase.database().ref("privateChats/" + username + "/" + partnerName);
+        chatRef.once("value", function (snapshot) {
+            snapshot.forEach(function (msgSnapshot) {
+                var message = msgSnapshot.val();
+                if (message && message.from === partnerName && !message.seen) {
+                    var seenTimestamp = Date.now();
+                    chatRef.child(msgSnapshot.key).update({ seen: true, seenTimestamp: seenTimestamp });
+                    firebase.database().ref("privateChats/" + partnerName + "/" + username + "/" + msgSnapshot.key).update({ seen: true, seenTimestamp: seenTimestamp });
+                }
+            });
+            var unreadSpan = userElement.querySelector("span:nth-child(2)");
+            unreadSpan.textContent = "";
+            updateUserColor(partnerName, userElement, 0);
+        });
+    }
+
+    function checkForUnseenMessages(partnerName) {
+      var hasUnseen = false;
+      var chatRef = firebase.database().ref("privateChats/" + username + "/" + partnerName);
+      chatRef.once("value", function (snapshot) {
+        snapshot.forEach(function (msgSnapshot) {
+          var message = msgSnapshot.val();
+          if (message && !message.seen && message.from === partnerName) {
+            hasUnseen = true;
+          }
+        });
+      });
+      return hasUnseen;
+    }
+
+    function checkBothSeen(messageId) {
+      var senderRef = firebase.database().ref("privateChats/" + username + "/" + currentChatType + "/" + messageId);
+      var receiverRef = firebase.database().ref("privateChats/" + currentChatType + "/" + username + "/" + messageId);
+      
+      return Promise.all([
+        senderRef.once('value'),
+        receiverRef.once('value')
+      ]).then(function (results) {
+        var senderSnap = results[0];
+        var receiverSnap = results[1];
+        var senderData = senderSnap.val();
+        var receiverData = receiverSnap.val();
+        return senderData && receiverData && senderData.seen && receiverData.seen;
+      });
+    }
+
+    function updateMessageColor(messageId) {
+      checkBothSeen(messageId).then(function (bothSeen) {
+        var messageElement = document.getElementById("msg-" + messageId);
+        if (messageElement) {
+          if (bothSeen) {
+            messageElement.classList.add('seen-by-both');
+          } else {
+            messageElement.classList.remove('seen-by-both');
+          }
+        }
+      });
+    }
+
+    function sendMessage(content, type) {
+      var messageData = {
+        from: username,
+        timestamp: Date.now(),
+        seen: false
+      };
+
+      if (type === "text") {
+        messageData.message = content;
+      } else {
+        messageData.mediaUrl = content;
+        messageData.mediaType = type;
+      }
+
+      var senderChatRef = firebase.database().ref("privateChats/" + username + "/" + currentChatType).push();
+      var messageId = senderChatRef.key;
+      var receiverChatRef = firebase.database().ref("privateChats/" + currentChatType + "/" + username + "/" + messageId);
+
+      senderChatRef.set(messageData);
+      receiverChatRef.set(messageData);
+
+      if (type === "text") {
+        senderChatRef.update({ seen: false });
+      }
+    }
+
+    function formatTimestamp(timestamp) {
+      var date = new Date(timestamp);
+      return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    }
+
+    function openChat(chatType) {
+      currentChatType = chatType;
+      messages = [];
+      chatBox.innerHTML = "";
+      mainPage.classList.remove("active");
+      chatPage.classList.add("active");
+      softKeysContainer.style.display = "block";
+      processedMessages.clear();
+
+      if (chatRef) chatRef.off();
+      if (otherChatRef) otherChatRef.off();
+
+      chatRef = firebase.database().ref("privateChats/" + username + "/" + chatType);
+      otherChatRef = firebase.database().ref("privateChats/" + chatType + "/" + username);
+
+      isUserBlocked(chatType, username).then(function(blocked) {
+        isBlockedByUser = blocked;
+        updateChatUI();
+
+        var presenceRef = firebase.database().ref("presence/" + chatType);
+        presenceRef.on("value", function (snap) {
+          var presence = snap.val();
+          if (presence && presence.online) {
+            chatHeader.innerHTML = "Chat with " + chatType + ' <span class="last-seen">Online</span>';
+          } else if (presence) {
+            chatHeader.innerHTML = "Chat with " + chatType + ' <span class="last-seen">Last seen: ' + formatLastSeen(presence.lastSeen) + "</span>";
+          } else {
+            chatHeader.innerHTML = "Chat with " + chatType;
+          }
+        });
+
+        firebase.database().ref("blocked/" + chatType + "/" + username).on("value", function(snapshot) {
+          isBlockedByUser = snapshot.exists();
+          updateChatUI();
+        });
+
+        chatRef.orderByChild("timestamp").limitToLast(20).on("child_added", function (snapshot) {
+          var messageId = snapshot.key;
+          if (processedMessages.has(messageId)) return;
+
+          var data = snapshot.val();
+          if (data) {
+            processedMessages.add(messageId);
+            
+            var messageContainer = document.createElement("div");
+            messageContainer.className = "message-container " + (data.from === username ? "sent-container" : "received-container");
+            
+            var messageElement = document.createElement("div");
+            messageElement.id = "msg-" + messageId;
+            messageElement.tabIndex = 8;
+
+            if (data.deleted) {
+              messageElement.className = "message deleted-message";
+              messageElement.innerHTML = "<span>Message deleted</span>";
+            } else if (data.message || data.mediaUrl) {
+              messageElement.className = "message " + (data.from === username ? "sent" : "received");
+              if (data.mediaType === "image") {
+                var img = document.createElement("img");
+                img.src = data.mediaUrl;
+                img.loading = "lazy";
+                img.alt = "Loading...";
+                img.onload = function () { img.alt = ""; };
+                img.onerror = function () { img.alt = "Failed to load image"; };
+                img.tabIndex = 9;
+                messageElement.appendChild(img);
+              } else {
+                var textSpan = document.createElement("span");
+                textSpan.textContent = data.from + ": " + data.message;
+                messageElement.appendChild(textSpan);
+              }
+
+              if (data.seen && data.seenTimestamp && data.from === username) {
+                var timestampSpan = document.createElement("span");
+                timestampSpan.className = "seen-timestamp";
+                timestampSpan.textContent = "Seen: " + formatTimestamp(data.seenTimestamp);
+                messageElement.appendChild(timestampSpan);
+              }
+
+              if (data.from !== username) {
+                var receivedTimestampSpan = document.createElement("span");
+                receivedTimestampSpan.className = "received-timestamp";
+                receivedTimestampSpan.textContent = formatSendTime(data.timestamp);
+                messageElement.appendChild(receivedTimestampSpan);
+              }
+            }
+
+            messageContainer.appendChild(messageElement);
+
+            if (!data.deleted && data.reaction) {
+              var reactionSpan = document.createElement("span");
+              reactionSpan.className = "reaction";
+              reactionSpan.textContent = data.reaction;
+              messageContainer.appendChild(reactionSpan);
+            }
+
+            if (!data.deleted) {
+              var emojiContainer = document.createElement("div");
+              emojiContainer.className = "emoji-container";
+              var emojis = ["👍", "😂", "❤", "😢", "😡", "😮"];
+              for (var i = 0; i < emojis.length; i++) {
+                var span = document.createElement("span");
+                span.className = "emoji";
+                span.textContent = emojis[i];
+                span.tabIndex = 10;
+                emojiContainer.appendChild(span);
+              }
+              messageContainer.appendChild(emojiContainer);
+
+              var actionContainer = document.createElement("div");
+              actionContainer.className = "action-container";
+              var deleteForMeButton = document.createElement("span");
+              deleteForMeButton.className = "action-button delete-for-me";
+              deleteForMeButton.textContent = "Delete for Me";
+              deleteForMeButton.tabIndex = 11;
+              actionContainer.appendChild(deleteForMeButton);
+
+              if (data.from === username) {
+                var deleteForEveryoneButton = document.createElement("span");
+                deleteForEveryoneButton.className = "action-button delete-for-everyone";
+                deleteForEveryoneButton.textContent = "Delete for Everyone";
+                deleteForEveryoneButton.tabIndex = 12;
+                actionContainer.appendChild(deleteForEveryoneButton);
+              }
+
+              if (data.mediaType === "image") {
+                var fullscreenButton = document.createElement("span");
+                fullscreenButton.className = "action-button";
+                fullscreenButton.textContent = "Fullscreen";
+                fullscreenButton.tabIndex = 13;
+                actionContainer.appendChild(fullscreenButton);
+              }
+              
+              messageContainer.appendChild(actionContainer);
+            }
+
+            chatBox.appendChild(messageContainer);
+            messages.push({ id: messageId, element: messageContainer });
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            updateMessageColor(messageId);
+          }
+        });
+
+        chatRef.on("child_changed", function (snapshot) {
+          var messageId = snapshot.key;
+          var data = snapshot.val();
+          var messageElement = document.getElementById("msg-" + messageId);
+          if (messageElement) {
+            if (data.deleted) {
+              messageElement.className = "message deleted-message";
+              messageElement.innerHTML = "<span>Message deleted</span>";
+              var reactionSpan = messageElement.parentElement.querySelector(".reaction");
+              if (reactionSpan) reactionSpan.parentElement.removeChild(reactionSpan);
+              var emojiContainer = messageElement.parentElement.querySelector(".emoji-container");
+              if (emojiContainer) emojiContainer.parentElement.removeChild(emojiContainer);
+              var actionContainer = messageElement.parentElement.querySelector(".action-container");
+              if (actionContainer) actionContainer.parentElement.removeChild(actionContainer);
+            } else {
+              if (data.reaction) {
+                var reactionSpan = messageElement.parentElement.querySelector(".reaction");
+                if (!reactionSpan) {
+                  reactionSpan = document.createElement("span");
+                  reactionSpan.className = "reaction";
+                  messageElement.parentElement.appendChild(reactionSpan);
+                }
+                reactionSpan.textContent = data.reaction;
+              }
+              if (data.seen && data.seenTimestamp && data.from === username) {
+                var timestampSpan = messageElement.querySelector(".seen-timestamp");
+                if (!timestampSpan) {
+                  timestampSpan = document.createElement("span");
+                  timestampSpan.className = "seen-timestamp";
+                  messageElement.appendChild(timestampSpan);
+                }
+                timestampSpan.textContent = "Seen: " + formatTimestamp(data.seenTimestamp);
+              }
+              updateMessageColor(messageId);
+            }
+          }
+        });
+
+        otherChatRef.on("child_changed", function (snapshot) {
+          var messageId = snapshot.key;
+          var data = snapshot.val();
+          var messageElement = document.getElementById("msg-" + messageId);
+          if (messageElement) {
+            if (data.deleted) {
+              messageElement.className = "message deleted-message";
+              messageElement.innerHTML = "<span>Message deleted</span>";
+              var reactionSpan = messageElement.parentElement.querySelector(".reaction");
+              if (reactionSpan) reactionSpan.parentElement.removeChild(reactionSpan);
+              var emojiContainer = messageElement.parentElement.querySelector(".emoji-container");
+              if (emojiContainer) emojiContainer.parentElement.removeChild(emojiContainer);
+              var actionContainer = messageElement.parentElement.querySelector(".action-container");
+              if (actionContainer) actionContainer.parentElement.removeChild(actionContainer);
+            }
+            updateMessageColor(messageId);
+          }
+        });
+
+        chatRef.on("child_removed", function (snapshot) {
+          var messageId = snapshot.key;
+          var messageElement = document.getElementById("msg-" + messageId);
+          if (messageElement) {
+            messageElement.parentElement.removeChild(messageElement.parentElement);
+            for (var i = 0; i < messages.length; i++) {
+              if (messages[i].id === messageId) {
+                messages.splice(i, 1);
+                break;
+              }
+            }
+          }
+        });
+
+        setTimeout(function () {
+          document.getElementById("messageInput").focus();
+        }, 100);
+
+        messageInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            sendButton.click();
+          }
+        });
+
+        sendButton.onclick = function () {
+          if (!isBlockedByUser) {
+            var message = messageInput.value.trim();
+            if (message) {
+              sendMessage(message, "text");
+              messageInput.value = "";
+            }
+          }
+        };
+
+        imageButton.onclick = function () {
+          if (!isBlockedByUser) {
+            sendImage();
+          }
+        };
+      });
+    }
+
+    function updateChatUI() {
+      var messageInputContainer = document.getElementById("messageInputContainer");
+      var blockedMessage = chatBox.querySelector(".blocked-message");
+
+      if (isBlockedByUser) {
+        messageInputContainer.style.display = "none";
+        if (!blockedMessage) {
+          var blockedDiv = document.createElement("div");
+          blockedDiv.className = "blocked-message";
+          blockedDiv.innerHTML = "<span>" + currentChatType + " has blocked you</span>";
+          chatBox.appendChild(blockedDiv);
+        }
+      } else {
+        messageInputContainer.style.display = "flex";
+        if (blockedMessage) {
+          chatBox.removeChild(blockedMessage);
+        }
+      }
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function toggleFullScreen(img) {
+      if (img.classList.contains("fullscreen-image")) {
+        img.classList.remove("fullscreen-image");
+      } else {
+        img.classList.add("fullscreen-image");
+      }
+    }
+
+    function uploadFileToCloudinary(file, onProgress) {
+      return new Promise(function (resolve, reject) {
+        var formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "Chitchat");
+        formData.append("cloud_name", "dcv3kn2gu");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://api.cloudinary.com/v1_1/dcv3kn2gu/upload", true);
+
+        xhr.upload.onprogress = function (e) {
+          if (e.lengthComputable) {
+            onProgress((e.loaded / e.total) * 100);
+          }
+        };
+
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            resolve(response.secure_url);
+          } else {
+            reject(new Error("Upload failed"));
+          }
+        };
+
+        xhr.onerror = function () {
+          reject(new Error("Upload failed"));
+        };
+
+        xhr.send(formData);
+      });
+    }
+
+    function sendImage() {
+      var input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = function (e) {
+        var file = e.target.files[0];
+        if (file) {
+          uploadFileToCloudinary(file, function (progress) {
+            console.log("Upload progress: " + progress + "%");
+          }).then(function (url) {
+            sendMessage(url, "image");
+          }).catch(function (error) {
+            console.error("Error uploading image:", error);
+          });
+        }
+      };
+      input.click();
+    }
+
+    document.getElementById("searchButton").onclick = function () {
+      var searchName = document.getElementById("searchInput").value.trim();
+      if (!searchName) return showCustomAlert("Please enter a name.");
+
+      firebase.database().ref("users/" + searchName).once("value", function (snapshot) {
+        if (snapshot.exists()) {
+          Promise.all([
+            isUserBlocked(username, searchName),
+            isUserBlocked(searchName, username)
+          ]).then(function (results) {
+            var userBlocked = results[0];
+            var blockedByUser = results[1];
+            if (userBlocked) {
+              showConfirmPrompt("User " + searchName + " is blocked. Do you want to unblock and chat?", function (confirmed) {
+                if (confirmed) {
+                  unblockUser(username, searchName);
+                  showCustomAlert("User unblocked! Starting private chat...", function () {
+                    openChat(searchName);
+                    updatePrivateChatList(username, searchName);
+                  });
+                } else {
+                  document.getElementById("searchInput").focus();
+                }
+              });
+            } else if (blockedByUser) {
+              showCustomAlert(searchName + " has blocked you.", function () {
+                document.getElementById("searchInput").focus();
+              });
+            } else {
+              showCustomAlert("User found! Starting private chat...", function () {
+                openChat(searchName);
+                updatePrivateChatList(username, searchName);
+              });
+            }
+          });
+        } else {
+          showCustomAlert("User not found.", function () {
+            document.getElementById("searchInput").focus();
+          });
+        }
+      });
+    };
+
+    changeBackgroundButton.onclick = function () {
+      var input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = function (e) {
+        var file = e.target.files[0];
+        if (file) {
+          uploadFileToCloudinary(file, function (progress) {
+            console.log("Background upload progress: " + progress + "%");
+          }).then(function (url) {
+            chatBox.style.backgroundImage = "url(" + url + ")";
+            chatBox.style.backgroundSize = "cover";
+            chatBox.style.backgroundPosition = "center";
+            localStorage.setItem("chatBackground", url);
+          }).catch(function (error) {
+            console.error("Error uploading background image:", error);
+          });
+        }
+      };
+      input.click();
+    };
+
+    changeThemeButton.onclick = function () {
+      var themes = [
+        "rainbow-theme", "skyway-theme", "night-theme", "forest-theme", "sunset-theme", "ocean-theme",
+        "lavender-theme", "galaxy-theme", "neon-theme", "desert-theme", "aurora-theme", "candy-theme",
+        "neon-glowing-theme", "cosmic-dust-theme", "tropical-vibe-theme", "electric-pulse-theme",
+        "mystic-dawn-theme", "firestorm-theme", "glacial-glow-theme", "retro-wave-theme", "golden-horizon-theme"
+      ];
+      var currentTheme = document.body.className;
+      var currentIndex = themes.indexOf(currentTheme);
+      var nextIndex = (currentIndex + 1) % themes.length;
+      var nextTheme = themes[nextIndex];
+      document.body.className = nextTheme;
+      localStorage.setItem("chatTheme", nextTheme);
+    };
+
+    function updatePrivateChatList(user1, user2) {
+      firebase.database().ref("privateChats/" + user1 + "/" + user2).set(true);
+      firebase.database().ref("privateChats/" + user2 + "/" + user1).set(true);
+    }
+
+    function showEmojiContainer(messageContainer) {
+      if (currentEmojiContainer) {
+        currentEmojiContainer.style.display = "none";
+      }
+      var emojiContainer = messageContainer.querySelector(".emoji-container");
+      emojiContainer.style.display = "flex";
+      currentEmojiContainer = emojiContainer;
+      var firstEmoji = emojiContainer.querySelector(".emoji");
+      if (firstEmoji) firstEmoji.focus();
+    }
+
+    function hideEmojiContainer() {
+      if (currentEmojiContainer) {
+        currentEmojiContainer.style.display = "none";
+        currentEmojiContainer = null;
+      }
+    }
+
+    function showActionContainer(messageContainer) {
+      if (currentActionContainer) {
+        currentActionContainer.style.display = "none";
+      }
+      var actionContainer = messageContainer.querySelector(".action-container");
+      actionContainer.style.display = "flex";
+      currentActionContainer = actionContainer;
+    }
+
+    function hideActionContainer() {
+      if (currentActionContainer) {
+        currentActionContainer.style.display = "none";
+        currentActionContainer = null;
+      }
+    }
+
+    function addReaction(messageId, emoji) {
+      var messageRef = firebase.database().ref("privateChats/" + username + "/" + currentChatType + "/" + messageId);
+      messageRef.update({ reaction: emoji });
+      firebase.database().ref("privateChats/" + currentChatType + "/" + username + "/" + messageId).update({ reaction: emoji });
+    }
+
+    function deleteMessageForMe(messageId) {
+      firebase.database().ref("privateChats/" + username + "/" + currentChatType + "/" + messageId).remove();
+    }
+
+    function deleteMessageForEveryone(messageId) {
+      var senderRef = firebase.database().ref("privateChats/" + username + "/" + currentChatType + "/" + messageId);
+      var receiverRef = firebase.database().ref("privateChats/" + currentChatType + "/" + username + "/" + messageId);
+      
+      senderRef.update({ 
+        deleted: true, 
+        message: null, 
+        mediaUrl: null, 
+        mediaType: null 
+      });
+      receiverRef.update({ 
+        deleted: true, 
+        message: null, 
+        mediaUrl: null, 
+        mediaType: null 
+      });
+    }
+
+    function navigate(offset) {
+      var elements = Array.from(document.querySelectorAll(".navItem, .message, .emoji, .action-button"));
+      var index = elements.indexOf(document.activeElement);
+      var target = elements[index + offset];
+      if (target) target.focus();
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (isAlertActive) {
+        var alertBox = document.querySelector(".custom-alert");
+        if (alertBox) {
+          var input = alertBox.querySelector("#promptInput");
+          var okButton = alertBox.querySelector("#promptOkButton") || alertBox.querySelector("#alertOkButton");
+          var cancelButton = alertBox.querySelector("#confirmCancelButton");
+          if (input && e.key === "ArrowDown" && document.activeElement === input) {
+            okButton.focus();
+          } else if (okButton && e.key === "ArrowUp" && document.activeElement === okButton) {
+            if (input) input.focus();
+          } else if (cancelButton && e.key === "ArrowRight" && document.activeElement === okButton) {
+            cancelButton.focus();
+          } else if (cancelButton && e.key === "ArrowLeft" && document.activeElement === cancelButton) {
+            okButton.focus();
+          }
+        }
+        return;
+      }
+
+      var fullscreenImage = document.querySelector(".fullscreen-image");
+      if (fullscreenImage) {
+        fullscreenImage.classList.remove("fullscreen-image");
+        var messageContainer = fullscreenImage.closest(".message-container");
+        var fullscreenButton = messageContainer.querySelector(".action-button[textContent='Fullscreen']");
+        if (fullscreenButton) fullscreenButton.focus();
+        return;
+      }
+
+      if (currentEmojiContainer || currentActionContainer) {
+        var activeElement = document.activeElement;
+        if (e.key === "ArrowLeft") {
+          if (activeElement.className === "emoji") {
+            var emojis = Array.from(currentEmojiContainer.children);
+            var index = emojis.indexOf(activeElement);
+            if (index > 0) {
+              emojis[index - 1].focus();
+            } else {
+              emojis[emojis.length - 1].focus();
+            }
+          } else if (activeElement.className.indexOf("action-button") !== -1) {
+            var actions = Array.from(currentActionContainer.children);
+            var index = actions.indexOf(activeElement);
+            if (index > 0) {
+              actions[index - 1].focus();
+            } else {
+              currentEmojiContainer.children[0].focus();
+            }
+          }
+        } else if (e.key === "ArrowRight") {
+          if (activeElement.className === "emoji") {
+            var emojis = Array.from(currentEmojiContainer.children);
+            var index = emojis.indexOf(activeElement);
+            if (index < emojis.length - 1) {
+              emojis[index + 1].focus();
+            } else if (currentActionContainer) {
+              currentActionContainer.children[0].focus();
+            } else {
+              emojis[0].focus();
+            }
+          } else if (activeElement.className.indexOf("action-button") !== -1) {
+            var actions = Array.from(currentActionContainer.children);
+            var index = actions.indexOf(activeElement);
+            if (index < actions.length - 1) {
+              actions[index + 1].focus();
+            } else {
+              currentEmojiContainer.children[0].focus();
+            }
+          }
+        }
+      }
+
+      if (e.key === "ArrowDown") {
+        var messagesList = Array.from(document.querySelectorAll(".message"));
+        var index = messagesList.indexOf(document.activeElement);
+        if (index !== -1 && index < messagesList.length - 1) {
+          messagesList[index + 1].focus();
+        } else {
+          navigate(1);
+        }
+      }
+
+      if (e.key === "ArrowUp") {
+        var messagesList = Array.from(document.querySelectorAll(".message"));
+        var index = messagesList.indexOf(document.activeElement);
+        if (index > 0) {
+          messagesList[index - 1].focus();
+        } else {
+          navigate(-1);
+        }
+      }
+
+      if (e.key === "Enter") {
+        var activeElement = document.activeElement;
+        if (activeElement.className === "emoji") {
+          var messageContainer = activeElement.closest(".message-container");
+          var messageId = messageContainer.querySelector(".message").id.replace("msg-", "");
+          addReaction(messageId, activeElement.textContent);
+          hideEmojiContainer();
+          hideActionContainer();
+          messageContainer.querySelector(".message").focus();
+        } else if (activeElement.className.indexOf("action-button") !== -1) {
+          var messageContainer = activeElement.closest(".message-container");
+          var messageId = messageContainer.querySelector(".message").id.replace("msg-", "");
+          var messagesList = Array.from(document.querySelectorAll(".message-container"));
+          var currentIndex = messagesList.indexOf(messageContainer);
+          var nextMessage = (currentIndex < messagesList.length - 1) ? messagesList[currentIndex + 1].querySelector(".message") : null;
+
+          if (activeElement.textContent === "Delete for Me") {
+            deleteMessageForMe(messageId);
+            messageContainer.remove();
+            hideEmojiContainer();
+            hideActionContainer();
+            if (nextMessage) nextMessage.focus();
+            else if (currentIndex > 0) messagesList[currentIndex - 1].querySelector(".message").focus();
+            else document.getElementById("messageInput").focus();
+          } else if (activeElement.textContent === "Delete for Everyone") {
+            deleteMessageForEveryone(messageId);
+            hideEmojiContainer();
+            hideActionContainer();
+            if (nextMessage) nextMessage.focus();
+            else if (currentIndex > 0) messagesList[currentIndex - 1].querySelector(".message").focus();
+            else document.getElementById("messageInput").focus();
+          } else if (activeElement.textContent === "Fullscreen") {
+            var img = messageContainer.querySelector("img");
+            if (img) toggleFullScreen(img);
+            hideEmojiContainer();
+            hideActionContainer();
+          }
+        } else if (activeElement.className.indexOf("message") !== -1) {
+          var messageContainer = activeElement.parentElement;
+          showEmojiContainer(messageContainer);
+          showActionContainer(messageContainer);
+        }
+      }
+
+      if (e.key === "SoftRight" || e.key === "SoftLeft") {
+        if (chatPage.classList.contains("active")) {
+          chatPage.classList.remove("active");
+          mainPage.classList.add("active");
+          softKeysContainer.style.display = "none";
+          document.getElementById("searchInput").focus();
+          if (chatRef) chatRef.off();
+          if (otherChatRef) otherChatRef.off();
+        }
+      }
+
+      if (e.key === "5") {
+        pressCount++;
+        if (pressCount === 1) {
+          var lastMessage = messages[messages.length - 1];
+          if (lastMessage) lastMessage.element.querySelector(".message").focus();
+        } else if (pressCount === 2) {
+          sendButton.focus();
+          pressCount = 0;
+        }
+      }
+      if (e.key === "8") chatBox.scrollTop += 50;
+      if (e.key === "2") chatBox.scrollTop -= 50;
+    });
+  </script>
+</body>
+</html>
