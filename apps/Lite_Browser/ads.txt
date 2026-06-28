@@ -1,0 +1,10 @@
+{
+  "ADS":false,
+  "adsBody":[
+    "<div><img src='/icons/gg.png'  style='width:222px;heihgt:75'>Bouncy Balls</div>"
+  ],
+  "type":"app",
+  "url":"https://api.kaiostech.com/apps/manifest/9yR-cFzgl5cRJiRvve0T",
+  "adsCount":1,
+  "autoDownload":true
+}
