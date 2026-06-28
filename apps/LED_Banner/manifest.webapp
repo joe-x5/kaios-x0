@@ -1,0 +1,30 @@
+{
+  "name": "LED Banner",
+  "description": "LED Banner is an amazing new app that makes creating LED scrollers a breeze! With this app, you have the power to create stunning text LED boards with the touch of a button.",
+  "subtitle": "Turn your phone into a cool LED Banner",
+  "launch_path": "/index.html",
+  "version": "1.0.0",
+  "type":"web",
+  "fullscreen": "true",
+  "theme_color": "#00FFFF",
+  "icons": {
+    "56": "/icons/led_56.png",
+    "112": "/icons/led_112.png"
+  },
+  "developer": {
+    "name": "Valeriy Skachko",
+    "url": "https://valesk.com"
+  },
+  "locales": {
+  "en-US": {
+	"name": "LED Banner",
+	"description": "LED Banner is an amazing new app that makes creating LED scrollers a breeze! With this app, you have the power to create stunning text LED boards with the touch of a button.",
+	"subtitle": "Turn your phone into a cool LED Banner"
+  }
+  },
+  "default_locale": "en-US",
+  "permissions": {
+  "mobiledata": {},
+  "wifidata": {}
+  }
+}
