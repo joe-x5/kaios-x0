@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="theme-color" content="rgb(255, 255, 255)">
+  <link rel="icon" type="image/png" href="images/CalcK_56.png">
+  <title>Calc K</title>
+  <!--<link rel="icon" type="image/png" href="images/logo.png">-->
+  <link rel="stylesheet" type="text/css" href="css/aparencia.css">
+  <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
+  <script src="js/operacion.js"></script>
+  <script src="js/hammer.js"></script>
+  <script src="js/math.min.js"></script>
+  <script src="js/kaiads.v5.min.js"></script>
+  </head>
+  <body onload="calculadora();">
+<div id="mascarah">
+	<div id="ayuda">
+	<div id="cerrarh">Close <i class="icon ion-power"></i></div>
+	<h3><img src="images/help.png"><span>Help</span></h3>
+	<div id="cuadroayuda">
+	<!--<ul>
+	<li id="tipo"><i class="icon ion-code-working"></i> Expressions types</li>
+	<li id="panscf"><i class="icon ion-erlenmeyer-flask"></i> Scientific panel</li>
+	<li id="caract"><i class="icon ion-calculator"></i> Features</li>
+	</ul>-->
+<a name="expression" id="ex"></a>
+	<h4 class="h4color"><i class="icon ion-code-working"></i> Expressions types</h4>
+	<p class="parrafos">
+	The way this calculator works is based on mathematical expressions. Some of this expressions looks like this: 
+	</p>
+	<p class"listas">
+	<span class="lista">3+98(-52) <span class="bueno"><i class="icon ion-checkmark-round"></i></span></span>
+	<span class="lista">5x9+√(25) <span class="bueno"><i class="icon ion-checkmark-round"></i></span></span>
+	<span class="lista">-109÷5! <span class="bueno"><i class="icon ion-checkmark-round"></i></span></span>
+	<span class="lista">sin((())) <span class="malo"><i class="icon ion-close-round"></i></span></span>
+	</p>
+	<p class="parrafos">
+	The last example It makes no sense and not display anything, this happen with all the expressions they are not well constructed. You can insert the last result in the current expression with the 'Ans' option on the menu. 
+	</p>
+	<p class="parrafos">
+	To enter the numbers, and the point symbol, in keypad telephones the following table is the correspondence of the telephone keyboard with the calculator keyboard: 
+	</p>
+	<table>
+  <tr>
+    <th>Phone Keypad</th>
+    <th>Calc Keypad</th>
+  </tr>
+  <tr>
+    <td>*</td>
+    <td>.</td>
+  </tr>
+<tr>
+    <td>#</td>
+    <td>=</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+  <tr>
+    <td>2</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>3</td>
+  </tr>
+<tr>
+    <td>4</td>
+    <td>4</td>
+  </tr>
+<tr>
+    <td>5</td>
+    <td>5</td>
+  </tr>
+<tr>
+    <td>6</td>
+    <td>6</td>
+  </tr>
+<tr>
+    <td>7</td>
+    <td>7</td>
+  </tr>
+<tr>
+    <td>8</td>
+    <td>8</td>
+  </tr>
+<tr>
+    <td>9</td>
+    <td>9</td>
+  </tr>
+</table>
+<p class="parrafos">
+	To enter the numbers, and the point symbol, in QWERTY telephones the following table is the correspondence of the telephone keyboard with the calculator keyboard:
+	</p>
+	<table>
+  <tr>
+    <th>Phone QWERTY</th>
+    <th>Calc Keypad</th>
+  </tr>
+<tr>
+    <td>.</td>
+    <td>.</td>
+  </tr>
+<tr>
+    <td>SPACE</td>
+    <td>=</td>
+  </tr>
+  <tr>
+    <td>0 or ,</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1 or W</td>
+    <td>1</td>
+  <tr>
+    <td>2 or E</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>3 or R</td>
+    <td>3</td>
+  </tr>
+<tr>
+    <td>4 or S</td>
+    <td>4</td>
+  </tr>
+<tr>
+    <td>5 or D</td>
+    <td>5</td>
+  </tr>
+<tr>
+    <td>6 or F</td>
+    <td>6</td>
+  </tr>
+<tr>
+    <td>7 or Z</td>
+    <td>7</td>
+  </tr>
+<tr>
+    <td>8 or X</td>
+    <td>8</td>
+  </tr>
+<tr>
+    <td>9 or C</td>
+    <td>9</td>
+  </tr>
+</table>
+<p class="parrafos">
+	To enter the mathematical operators, pressing the down key or the up key the selector will move changing color in the boxes between the mathematical operators DEL, ÷, x, -, + once you have selected the desired mathematical operator, press the Enter key to enter it on screen. 
+	</p>
+	<p class="parrafos">
+	Remember you only can press = and show the result of the operation only when the Scientific panel is close. 
+	</p>
+   <a name="scientific" id="s"></a>
+   <h4 class="h4color"><i class="icon ion-erlenmeyer-flask"></i> Scientific panel</h4>
+   <p class="parrafos">
+   You can open the scientific panel press the left or the right key to close it press once again the left or the right key, also you still can open the panel in the menu option.
+	</p>
+	<p class="parrafos">
+   To enter the scientific operators, in Keypad telephones the following table is the correspondence of the telephone keyboard with the calculator scientific keyboard:
+	</p>
+	<table>
+  <tr>
+    <th>Phone Keypad</th>
+    <th>Scientific Keypad</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>sin</td>
+  <tr>
+    <td>2</td>
+    <td>cos</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>tan</td>
+  </tr>
+<tr>
+    <td>4</td>
+    <td>ln</td>
+  </tr>
+<tr>
+    <td>5</td>
+    <td>log</td>
+  </tr>
+<tr>
+    <td>6</td>
+    <td>x!</td>
+  </tr>
+<tr>
+    <td>7</td>
+    <td>π</td>
+  </tr>
+<tr>
+    <td>8</td>
+    <td>e</td>
+  </tr>
+<tr>
+    <td>9</td>
+    <td>^</td>
+  </tr>
+<tr>
+    <td>*</td>
+    <td>(</td>
+  </tr>
+ <tr>
+    <td>0</td>
+    <td>)</td>
+  </tr>
+<tr>
+    <td>#</td>
+    <td>√</td>
+  </tr>
+</table>
+<p class="parrafos">
+   To enter the scientific operators, in QWERTY telephones the following table is the correspondence of the telephone keyboard with the calculator scientific keyboard:
+	</p>
+	<table>
+  <tr>
+    <th>Phone QWERTY</th>
+    <th>Scientific Keypad</th>
+  </tr>
+  <tr>
+    <td>1 or W</td>
+    <td>sin</td>
+  <tr>
+    <td>2 or E</td>
+    <td>cos</td>
+  </tr>
+  <tr>
+    <td>3 or R</td>
+    <td>tan</td>
+  </tr>
+<tr>
+    <td>4 or S</td>
+    <td>ln</td>
+  </tr>
+<tr>
+    <td>5 or D</td>
+    <td>log</td>
+  </tr>
+<tr>
+    <td>6 or F</td>
+    <td>x!</td>
+  </tr>
+<tr>
+    <td>7 or Z</td>
+    <td>π</td>
+  </tr>
+<tr>
+    <td>8 or X</td>
+    <td>e</td>
+  </tr>
+<tr>
+    <td>9 or C</td>
+    <td>^</td>
+  </tr>
+<tr>
+    <td>V</td>
+    <td>(</td>
+  </tr>
+ <tr>
+    <td>B</td>
+    <td>)</td>
+  </tr>
+<tr>
+    <td>N</td>
+    <td>√</td>
+  </tr>
+</table>
+	<a name="features" id="f"></a>
+	<h4 class="h4color"><i class="icon ion-calculator"></i> Features</h4>
+	<p class="parrafos">
+   This app, contains all the arithmetic operations and the most common and basic scientific operations. But some complex calculus like  Gamma function X!=Gamma(x+1)... that is use for floats factorial are not yet implemented.
+	</p>	
+	</div>
+	</div>
+</div>
+ <div id="mascara">
+	<div id="about">
+	<div id="cerrar">Close <i class="icon ion-power"></i></div>
+	<div id="calclog"><img src="images/calcK70.png"></div>
+			<h4 id="titulo">Calc K</h4>
+			<p id="acerca">Basic and scientific calculator with a "Material" and minimalistic design. Build for KaiOS©.</p>
+	
+	</div>
+	
+</div>
+ <div id="pantalla">
+ <p class="sztd" id="elipsisv"><i class="icon ion-android-more-vertical"></i></p>
+<div id="menup">
+<ul>
+<li id="menuclear"><div class="menuspan"><i class="icon ion-backspace"></i> Clear screen</div></li>
+<li id="menuans"><div class="menuspan"><i class="icon ion-code-download"></i> Ans</div></li>
+<li id="menupop"><div class="menuspan"><i class="icon ion-erlenmeyer-flask"></i> <span id="scstate">Open</span> scientific panel</div></li>
+<li id="menuayuda"><div class="menuspan"><i class="icon ion-help-circled"></i> Help</div></li>
+<li id="menuacerca"><div class="menuspan"><i class="icon ion-information-circled"></i> About</div></li>
+</ul>
+</div>
+
+<div id="operacion"></div>
+<div id="resultado">0</div>
+ </div>
+ <div id="teclado">
+ <div class="pl">
+	<div class="row">1<div class="prezz" id="one" data-pantalla="1" data-calculo="1"></div></div>
+	<div class="row">2<div class="prezz" id="two" data-pantalla="2" data-calculo="2"></div></div>
+	<div class="row">3<div class="prezz" id="three" data-pantalla="3" data-calculo="3"></div></div>
+	</div>
+<div class="pl">
+	<div class="row">4<div class="prezz" id="four" data-pantalla="4" data-calculo="4"></div></div>
+	<div class="row">5<div class="prezz" id="five" data-pantalla="5" data-calculo="5"></div></div>
+	<div class="row">6<div class="prezz" id="six" data-pantalla="6" data-calculo="6"></div></div>
+</div>
+<div class="pl">
+    <div class="row">7<div class="prezz" id="seven" data-pantalla="7" data-calculo="7"></div></div>
+	<div class="row">8<div class="prezz" id="eight" data-pantalla="8" data-calculo="8"></div></div>
+	<div class="row">9<div class="prezz" id="nine" data-pantalla="9" data-calculo="9"></div></div>
+	
+
+</div>
+<div class="pl">
+	<div class="row">.<div class="prezz" id="punto" data-pantalla="." data-calculo="."></div></div>
+	<div class="row">0<div class="prezz" id="zero" data-pantalla="0" data-calculo="0"></div></div>
+	<div class="row">=<div class="prezz" id="igual" data-especial="eql"></div></div>
+</div>
+ </div>
+<div id="simbolos">
+<div class="pl">
+	<div class="rows"><span id="deltcl">DEL</span><div class="prezz" id="del"></div></div>
+</div>
+<div class="pl">
+	<div class="rows">÷<div class="prezz" id="division" data-pantalla="÷" data-calculo="/"></div></div>
+</div>
+<div class="pl">
+	<div class="rows">×<div class="prezz" id="multip" data-pantalla="×" data-calculo="*"></div></div>
+</div>
+<div class="pl">
+	<div class="rows">─<div class="prezz" id="menos" data-pantalla="-" data-calculo="-"></div></div>
+</div>
+<div class="pl">
+	<div class="rows">+<div class="prezz" id="mas" data-pantalla="+" data-calculo="+"></div></div>
+</div>
+</div> 
+<div id="cientific">
+<span id="flechal"><i class="icon ion-chevron-left"></i></span>
+<span id="flechar"><i class="icon ion-chevron-right"></i></span>
+<div id="cientifictable">
+<div class="pl">
+	<div class="rowsc">sin<div class="prezzsc" id="seno" data-pantalla="sin(" data-calculo="sin("></div></div>
+	<div class="rowsc">cos<div class="prezzsc" id="coseno" data-pantalla="cos(" data-calculo="cos("></div></div>
+	<div class="rowsc">tan<div class="prezzsc" id="tangente" data-pantalla="tan(" data-calculo="tan("></div></div>
+</div>
+<div class="pl">
+	<div class="rowsc">ln<div class="prezzsc" id="ln" data-pantalla="ln(" data-calculo="log("></div></div>
+	<div class="rowsc">log<div class="prezzsc" id="log" data-pantalla="log(" data-calculo="log10("></div></div>
+	<div class="rowsc">x!<div class="prezzsc" id="factorial" data-pantalla="!" data-calculo="!"></div></div>
+</div>
+<div class="pl">
+	<div class="rowsc">π<div class="prezzsc" id="pi" data-pantalla="π" data-calculo="pi"></div></div>
+	<div class="rowsc">e<div class="prezzsc" id="euler" data-pantalla="e" data-calculo="e"></div></div>
+	<div class="rowsc">^<div class="prezzsc" id="potencia" data-pantalla="^" data-calculo="^"></div></div>
+</div>
+<div class="pl">
+	<div class="rowsc">(<div class="prezzsc" id="parentiz" data-pantalla="(" data-calculo="("></div></div>
+	<div class="rowsc">)<div class="prezzsc" id="parentdc" data-pantalla=")" data-calculo=")"></div></div>
+	<div class="rowsc">√<div class="prezzsc" id="raiz" data-pantalla="√(" data-calculo="sqrt("></div></div>
+</div>
+</div>
+</div>
+<div id='ad-container'></div>
+ </body>
+</html>
