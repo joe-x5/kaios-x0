@@ -1,0 +1,31 @@
+{
+  "version": "1.0.3",
+  "name": "Calc K",
+  "subtitle": "Basic and scientific calculator",
+  "description": "Basic and scientific calculator with a Material and minimalistic design. This calculator, contains all the arithmetic operations and the most common and basic scientific operations.",
+  "type": "web",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/images/CalcK_56.png",
+    "112": "/images/CalcK_112.png"
+  },
+  "Permissions": {
+	"mobiledata":{},
+	"wifidata":{}
+	},
+  "developer": {
+    "name": "Michael Sillas",
+    "url": "http://www.genesys21.net"
+  },
+  "locales": {
+    "en-US": {
+      "name": "Calc K",
+      "subtitle": "Basic and scientific calculator",
+      "description": "Basic and scientific calculator with a Material and minimalistic design. This calculator, contains all the arithmetic operations and the most common and basic scientific operations."
+    }
+  },
+  "default_locale": "en-US",
+"categories": [
+  "utilities"
+]
+}
