@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script src="js/kaiads.v5.min.js" defer></script> 
+    <script src="js/set.js" defer></script>
+	<style>
+		body {
+			background-image: url("css/port.gif");
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+		}
+	</style>
+  </head>
+  <body>
+  <label for="text" id="labeltext">Banner text:</label>
+  <input type="text" id="text" tabIndex=0 class="items">
+  <label for="color" id="labelcolor">Color:</label>
+  <input type="text" id="color" tabIndex=1 class="items arrows" readonly>
+  <label for="size" id="labelsize">Size:</label>
+  <input type="text" id="size" tabIndex=2 class="items arrows" readonly>
+  <label for="speed" id="labelspeed">Speed:</label>
+  <input type="text" id="speed" tabIndex=3 class="items arrows" readonly>
+  <label for="direction" id="labeldirection">Direction:</label>
+  <input type="text" id="direction" tabIndex=4 class="items arrows" readonly>
+  
+  <div id="chkbx">
+    <input type="checkbox" id="glow" class="items" tabIndex=5>
+    <label for="glow">Glow</label>
+  </div>
+	
+	
+      <footer class="softkey">
+        <table class="footertable"><tr>
+        <td class="footerth"><div id="softkey-left" class="fkey">Save</div></td>
+        <td class="footerth"><div id="softkey-center" class="fkey">OK</div></td>
+        <td class="footerth"><div id="softkey-right" class="fkey">Cancel</div></td>
+        </tr></table>
+    </footer>	
+  </body>
+
+</html>
