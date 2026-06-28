@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="WxFire 🔥 - Your go-to platform for the latest updates and information.">
+  <title>WxFire 🔥</title>
+  <style>
+    body, html {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="contentFrame" src="https://wxfire.rf.gd/" allowfullscreen></iframe>
+
+  <script type="text/javascript">
+    // Control iframe with arrow keys
+    document.addEventListener('keydown', function(event) {
+      const iframe = document.getElementById('contentFrame');
+      const key = event.key;
+
+      switch (key) {
+        case 'ArrowUp':
+          iframe.contentWindow.scrollBy(0, -20); // Scroll up
+          break;
+        case 'ArrowDown':
+          iframe.contentWindow.scrollBy(0, 20); // Scroll down
+          break;
+        case 'ArrowLeft':
+          iframe.contentWindow.scrollBy(-20, 0); // Scroll left
+          break;
+        case 'ArrowRight':
+          iframe.contentWindow.scrollBy(20, 0); // Scroll right
+          break;
+      }
+    });
+  </script>
+</body>
+</html>
