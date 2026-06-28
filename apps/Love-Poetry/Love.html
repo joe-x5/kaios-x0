@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Poetry Quotes</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f3f4f6; /* Light grey background */
+    color: #333; /* Dark text for readability */
+    text-align: center;
+    padding-top: 50px; /* Space for the header */
+  }
+  .header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #ff4d6d; /* Accent color */
+    color: #fff;
+    padding: 10px 0;
+    font-size: 24px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+  }
+  .quote-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff; /* White card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Card shadow */
+  }
+  .quote {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .author {
+    font-size: 16px;
+    color: #777; /* Dark grey for the author */
+    font-style: italic;
+  }
+  /* Add responsiveness for smaller devices */
+  @media (max-width: 768px) {
+    .quote {
+      font-size: 16px;
+    }
+    .author {
+      font-size: 14px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">Love Poetry Quotes</div>
+
+<div class="quote-container">
+  <div class="quote" id="quote">"Love is not about possession, it's all about appreciation."</div>
+  <div class="author" id="author">- Chinese Proverb</div>
+</div>
+
+<script>
+// Example JavaScript to change the quote and author text
+const quotes = [
+  {
+    quote: "Love is not about possession, it's all about appreciation.",
+    author: "Chinese Proverb"
+  },
+  // Add more quote objects here
+];
+
+function displayQuote() {
+  const index = Math.floor(Math.random() * quotes.length);
+  document.getElementById('quote').textContent = `"${quotes[index].quote}"`;
+  document.getElementById('author').textContent = `- ${quotes[index].author}`;
+}
+
+// Call displayQuote on page load and every 10 seconds
+displayQuote();
+setInterval(displayQuote, 10000);
+</script>
+
+</body>
+</html>
