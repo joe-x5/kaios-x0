@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+<title>Draw IT</title>
+
+
+<style>*{ box-sizing: border-box;} body{ margin: 0; padding: 0; font-family: 'Fira Sans', sans-serif; background-color: #333; color: white; overflow: hidden; height: 100vh; width: 100vw;} .screen{ display: none; flex-direction: column; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-color: #4a4a4a;} .screen.active{ display: flex;} .screen-content{ flex-grow: 1; position: relative; overflow: hidden;} h2{ background-color: #00b7ff; color: white; text-align: center; padding: 2px; margin: 0; font-size: 16px;} #softkey-bar{ width: 100%; height: 30px; background-color: #222; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 600; padding: 0 5px; position: fixed; bottom: 0; z-index: 100;} #softkey-center{ text-align: center; text-transform: uppercase;} .kai-list{ list-style: none; padding: 0; margin: 0; height: 100%; overflow-y: auto;} .kai-list li{ padding: 10px 15px; border-bottom: 1px solid #555;} .kai-list li:focus{ background-color: #00a8e0; color: white; outline: none;} #main-canvas{ position: absolute; top: 0; left: 0; background-color: white;} #drawing-cursor{ position: absolute; width: 10px; height: 10px; border: 2px solid red; background-color: rgba(255, 0, 0, 0.3); pointer-events: none; z-index: 10; border-radius: 50%;} #toolbar{ position: absolute; bottom: 30px; width: 100%; background-color: rgba(0, 0, 0, 0.7); color: white; font-size: 12px; padding: 3px 5px; display: flex; justify-content: space-between; z-index: 5;} #toolbar-color{ width: 14px; height: 14px; border: 1px solid white; display: inline-block; vertical-align: middle; margin-right: 5px;} #camera-preview{ width: 100%; height: 100%; object-fit: cover;} .help-container{ padding: 10px; height: calc(100vh - 58px); overflow-y: auto;} .help-container p{ margin-top: 0;} 
+
+</style>
+
+
+</head>
+
+
+
+<body>
+
+<div id="app-container">
+<section id="splash-screen" class="screen active">
+
+<div class="screen-content" style="display: flex; align-items: center; justify-content: center; text-align: center;"><div>
+
+<h1>Draw IT</h1>
+<p data-l10n-id="loading">Loading...</p>
+
+</div></div></section>
+
+
+<section id="language-screen" class="screen">
+
+<h2 data-l10n-id="language">Language</h2>
+
+<div class="screen-content">
+
+<ul class="kai-list" id="language-list">
+
+<li tabindex="0" data-lang="en"  onclick='sendKeyPress6577gt("Enter")'>English</li>
+
+<li tabindex="0" data-lang="zh"  onclick='sendKeyPress6577gt("Enter")'>中文 (Chinese)</li>
+
+<li tabindex="0" data-lang="pt"  onclick='sendKeyPress6577gt("Enter")'>Português</li>
+
+<li tabindex="0" data-lang="it"  onclick='sendKeyPress6577gt("Enter")'>Italiano</li>
+
+<li tabindex="0" data-lang="nl"  onclick='sendKeyPress6577gt("Enter")'>Nederlands</li>
+
+<li tabindex="0" data-lang="sl"  onclick='sendKeyPress6577gt("Enter")'>Slovenščina</li>
+
+<li tabindex="0" data-lang="bn"  onclick='sendKeyPress6577gt("Enter")'>বাংলা (Bengali)</li>
+
+</ul>
+</div>
+</section>
+
+<section id="drawing-screen" class="screen">
+<div class="screen-content">
+<canvas id="main-canvas"></canvas>
+<div id="drawing-cursor"></div>
+</div>
+
+<div id="toolbar">
+<span>
+<span data-l10n-id="color" onclick='sendKeyPress6577gt(&#39;1&#39;)'>Color</span>: <span id="toolbar-color"></span>
+</span>
+
+<span id="toolbar-width" onclick='sendKeyPress6577gt("2")'>Width: 3</span>
+
+<span id="toolbar-tool" onclick='sendKeyPress6577gt(&#39;3&#39;)'>Tool: Line</span>
+
+
+</div>
+
+</section>
+
+<section id="camera-screen" class="screen">
+<div class="screen-content">
+<video id="camera-preview" autoplay></video>
+</div></section>
+
+<section id="help-screen" class="screen">
+<h2 data-l10n-id="help">Help</h2>
+<div class="screen-content help-container">
+<p data-l10n-id="helpText"></p>
+</div></section>
+</div>
+
+<div id="softkey-bar">
+<span id="softkey-left" onclick='sendKeyPress6577gt(&#39;SoftLeft&#39;)'></span>
+<span id="softkey-center" onclick='sendKeyPress6577gt(&#39;Enter&#39;)'></span>
+<span id="softkey-right" onclick='sendKeyPress6577gt(&#39;SoftRight&#39;)'></span>
+</div>
+
+<script src="kaiads.v5.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+    function sendKeyPress6577gt(key) {
+        let event = new KeyboardEvent("keydown", { key: key });
+        document.dispatchEvent(event);
+        setTimeout(() => {
+            document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
+        }, 100);
+    }
+</script>
+
+</body></html>
