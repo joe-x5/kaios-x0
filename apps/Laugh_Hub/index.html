@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=240, initial-scale=1.0">
+    <link rel="stylesheet" href="footerStyles.css">
+    <title>Laugh Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        /* Header styling */
+        #header {
+            background-color: #f6ac29;
+            color: #fff;
+            text-align: center;
+            padding: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        /* Navigation bar styling */
+        .nav {
+            display: flex;
+            overflow-x: auto;
+            background-color: #444;
+            padding: 5px;
+        }
+        .navItem {
+            background-color: #f6ac29;
+            color: #fff;
+            border: none;
+            padding: 6px;
+            margin-right: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .navItem:focus {
+            border: 2px solid yellow;
+        }
+        /* Joke display styling */
+        #quoteContainer {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <div id="header">Laugh Hub</div>
+
+        <!-- Navigation categories -->
+        <div id="nav" class="nav">
+            <!-- Categories will be dynamically added here -->
+        </div>
+        
+        <!-- Joke display area -->
+        <div id="quoteContainer">
+            <div id="quote">Press SoftRight for a joke!</div>
+        </div>
+        
+        <!-- Footer for softkeys -->
+        <footer class="softkey">
+            <div id="softKeysContainer">
+                <div id="softkey-left">Share</div>
+                <div id="softkey-center"></div>
+                <div id="softkey-right">New Joke</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        let jokeCount = 0; // Variable to track the number of jokes
+
+        // Fetch and display joke based on category
+        function getJoke(category = 'random') {
+            const quoteContainer = document.getElementById("quote");
+            quoteContainer.innerHTML = "Loading...";
+
+            const url = category === 'random' 
+                ? 'https://api.chucknorris.io/jokes/random' 
+                : `https://api.chucknorris.io/jokes/random?category=${category}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    quoteContainer.innerHTML = data.value; // Display joke
+                    // Store the joke text for sharing
+                    quoteContainer.dataset.jokeText = data.value; // Store joke in a data attribute
+
+                    jokeCount++; // Increment the joke count
+
+                    // Show an ad after every 5 jokes
+                    if (jokeCount % 5 === 0) {
+                        showAd();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    quoteContainer.innerHTML = "Failed to load joke. Please try again!";
+                });
+        }
+
+        // Function to show the ad
+        function showAd() {
+            getKaiAd({
+                publisher: 'da08737d-861e-4ebe-bbbb-8fb90d004d39',
+                app: 'Laugh_Hub', // Updated app name
+                slot: 'Laugh_Hub_slot', // Updated ad slot
+                onerror: err => console.error('Custom catch:', err),
+                onready: ad => {
+                    ad.call('display');
+                    ad.on('display', () => document.getElementById("softKeysContainer").style.display = "none");
+                    ad.on('close', () => {
+                        document.getElementById("softKeysContainer").style.display = "block";
+                    });
+                }
+            });
+        }
+
+        // Function to fetch and populate categories
+        function loadCategories() {
+            fetch('https://api.chucknorris.io/jokes/categories')
+                .then(response => response.json())
+                .then(categories => {
+                    const nav = document.getElementById('nav');
+                    categories.forEach(category => {
+                        const button = document.createElement('button');
+                        button.classList.add('navItem');
+                        button.innerText = category.charAt(0).toUpperCase() + category.slice(1);
+                        button.onclick = () => getJoke(category);
+                        nav.appendChild(button);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching categories:", error);
+                });
+        }
+
+        // Navigation function to handle left/right arrow navigation
+        function nav(move) {
+            const items = document.querySelectorAll('.navItem');
+            const currentIndex = Array.from(items).indexOf(document.activeElement);
+            const next = currentIndex + move;
+
+            if (next >= 0 && next < items.length) {
+                items[next].focus();
+            }
+        }
+
+        // Keyboard event listener
+        document.addEventListener('keydown', e => {
+            if (e.key === "ArrowRight") nav(1);   // Move right across categories
+            if (e.key === "ArrowLeft") nav(-1);    // Move left across categories
+
+            // SoftRight fetches a new random joke
+            if (e.key === "SoftRight") getJoke();
+
+            // SoftLeft shares the joke
+            if (e.key === "SoftLeft") {
+                const jokeText = document.querySelector('#quote').dataset.jokeText;
+                if (jokeText) {
+                    const shareActivity = new MozActivity({
+                        name: 'new',
+                        data: {
+                            type: 'websms/sms',
+                            body: jokeText
+                        },
+                        target: 'message'
+                    });
+                }
+            }
+        });
+
+        // Load categories and default joke on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCategories(); // Load categories
+            getJoke(); // Get a random joke
+        });
+
+        // KaiOS Ad script
+        document.addEventListener("DOMContentLoaded", () => {
+            getKaiAd({
+                publisher: '58d21092-87f8-47c3-883d-fcd67eb318d8',
+                app: 'Bouncy Balls', // Updated app name
+                slot: 'Bouncy_Balls_slot', // Updated ad slot
+                onerror: err => console.error('Custom catch:', err),
+                onready: ad => {
+                    ad.call('display');
+                    ad.on('display', () => document.getElementById("softKeysContainer").style.display = "none");
+                    ad.on('close', () => {
+                        document.getElementById("softKeysContainer").style.display = "block";
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="js/kaiads.v5.min.js"></script>
+</body>
+</html>
