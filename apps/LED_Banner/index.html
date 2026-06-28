@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/index.js" defer></script>
+  </head>
+	<style>
+		body {
+			background-image: url("css/port.gif");
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+		}
+	</style>
+  
+  <body>
+ 
+<div id="title1">
+<span class="red">L</span>
+<span class="cyan">E</span>
+<span class="green">D</span>
+</div>
+<div id="title2">
+<span class="white">Banner</span>
+</div>
+ 
+<table class="mtable">
+<tr>
+<td>
+<button id="run" class="items inbut" tabIndex=0 onclick="sendKeyPress6577gt(&apos;Enter&apos;)">Run Banner</button>
+</td>
+</tr>
+<tr>
+<td>
+<button id="set" class="items inbut" tabIndex=1 onclick="sendKeyPress6577gt(&apos;Enter&apos;)">Settings</button>
+</td>
+</tr>
+<tr>
+<td>
+<button id="help" class="items inbut" tabIndex=2 onclick="sendKeyPress6577gt(&apos;Enter&apos;)">Help</button>
+</td>
+</tr>
+</table>
+
+
+<script>
+    function sendKeyPress6577gt(key) {
+        let event = new KeyboardEvent("keydown", { key: key });
+        document.dispatchEvent(event);
+        setTimeout(() => {
+            document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
+        }, 100);
+    }
+</script>
+
+
+  </body>
+
+</html>
