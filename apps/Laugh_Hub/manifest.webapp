@@ -1,0 +1,30 @@
+{
+  "version": "1.0.2",
+  "name": "Laugh Hub",
+  "subtitle": "Laugh & Share with Laugh Hub",
+  "description": "Discover a variety of jokes across different categories and share them with friends. Designed for easy navigation and sharing on KaiOS.",
+  "type": "web",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/icon56x56.png",
+    "112": "/icons/icon112x112.png"
+  },
+  "permissions": {
+    "mobiledata": {},
+    "wifidata": {}
+  },
+  "categories": ["entertainment", "utilities"],
+  "developer": {
+    "name": "M Zubair Talha",
+    "url": "http://zubitechofficial.blogspot.com"
+  },
+  "locales": {
+    "en-US": {
+      "name": "Laugh Hub",
+      "subtitle": "Laugh & Share with Laugh Hub",
+      "description": "Discover jokes from categories like programming, puns, dark humor, and more. Easily share your favorite jokes with friends!"
+    }
+  },
+  "default_locale": "en-US",
+  "theme_color": "#444"
+}
