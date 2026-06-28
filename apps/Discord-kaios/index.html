@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="theme-color" content="#36393f" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="css/pages.css" />
+		<link rel="stylesheet" href="css/chlist.css" />
+		<link rel="stylesheet" href="css/chview.css" />
+		<link rel="stylesheet" href="css/srvrs.css" />
+		<script src="js/EventEmitter.js"></script>
+		<script src="js/EmojiDict.js"></script>
+		<script src="js/polyfills.js"></script>
+		<script src="js/spatial_navigation.js"></script>
+		<script src="js/DiscordXHR.js"></script>
+		<script src="js/DiscordClient.js" defer></script>
+	</head>
+	<body>
+		<div id="srvrs">
+			<div class="server-icon selected" tabindex="0" data-mentions="0" data-role="dms"></div>
+			<div class="servers"></div>
+		</div>
+
+		<div id="chlist"></div>
+
+		<div id="chview">
+			<header>
+				<span data-status="offline"></span>
+				<span id="chname">Loading...</span>
+			</header>
+			<div id="composer">
+				<style></style>
+				<div id="message_container" tabindex="0"></div>
+				<div id="writer">
+					<textarea id="writert"></textarea>
+					<div id="readonly_warn">You do not have permission to send messages in this channel.</div>
+				</div>
+			</div>
+			<footer>
+				<div></div>
+				<div></div>
+				<div></div>
+			</footer>
+		</div>
+
+		<div id="loading">
+			<img width="120" src="logo.png">
+		</div>
+	</body>
+</html>
