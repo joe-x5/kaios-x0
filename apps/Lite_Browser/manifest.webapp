@@ -1,0 +1,40 @@
+{
+  "name": "Lite Browser",
+  "display": "Lite Browser",
+  "version": "1.0.1",
+  "type": "privileged",
+  "description": "Lite browser is Is An PowerFull Web Browser For Kaios with Almost all Features, Best LightWeight And Fast Smooth Web Browser For Both Low End And High End Kaios Devices.",
+  "subtitle": "Fells Like Opera Mini 4.4",
+  "launch_path": "/index.html",
+  "default_locale": "en-US",
+  "ime_default_softkey_bar": true,
+  "locales": {
+    "en-US": {
+	    "name": "Lite Browser",
+      "description": "Lite browser is Is An PowerFull Web Browser For Kaios with Almost all Features, Best LightWeight And Fast Smooth Web Browser For Both Low End And High End Kaios Devices."
+	  }
+  },
+  "icons": {
+    "56": "/icons/56.png",
+    "112": "/icons/112.png"
+  },
+  "permissions": {
+    "browser": {},
+    "volumemanager": {},
+    "tcp-socket": {},
+    "systemXHR":{},
+    "feature-detection": {},
+    "spatialnavigation-app-manage": {},
+    "audio-capture": {},
+    "audio-channel-content": {}
+  },
+  "developer": {
+    "name": "shifat100",
+    "url": "http://shifat100.xtgem.com"
+  },
+  "dependencies": {
+		"ads-sdk": "1.5.8"
+	},
+  "theme_color": "#ffffff",
+  "fullscreen": "true"
+}
