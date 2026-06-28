@@ -1,0 +1,28 @@
+{
+  "version": "1.0.3",
+  "name": "AI Chatbot",
+"theme_color": "#FFFFFF",
+  "description": "AI Chatbot, Easy to use AI Chatbot for KaiOS devices. Chat with an AI-powered assistant, get instant responses, and enjoy seamless conversations on your KaiOS phone. Beyond standard chatting, it features a dedicated full-screen reader for comfortably viewing long responses, integrated Text-to-Speech for auditory accessibility, and a handy 'Save to File' function that allows you to download AI-generated content directly to your device. With intuitive D-Pad navigation and secure no personal API key management, This transforms your feature phone into a smart productivity tool capable of writing, coding, and answering queries on the go.",
+   "origin": "app://gemini.api.bot",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/56.png",
+    "112": "/112.png",
+    "128": "/128.png"
+  },
+  "fullscreen": "true",
+  "developer": {
+    "name": "shifat100",
+    "url": "http://shifat100.xtgem.com"
+  },
+  "locales": {
+    "en-US": {
+      "name": "AI Chatbot",
+      "subtitle": "An Unofficial Chatbot Client",
+      "description": "AI Chatbot, Easy to use AI Chatbot for KaiOS devices. Chat with an AI-powered assistant, get instant responses, and enjoy seamless conversations on your KaiOS phone. Beyond standard chatting, it features a dedicated full-screen reader for comfortably viewing long responses, integrated Text-to-Speech for auditory accessibility, and a handy 'Save to File' function that allows you to download AI-generated content directly to your device. With intuitive D-Pad navigation and secure no personal API key management, This transforms your feature phone into a smart productivity tool capable of writing, coding, and answering queries on the go."
+    }
+  },
+  "default_locale": "en-US",
+  "cursor": false,
+  "type": "web"
+}
